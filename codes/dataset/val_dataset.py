@@ -1,7 +1,7 @@
 import numpy as np
 import os
-from code.dataset.util import read_image, image_to_channels
-from code.util.misc import get_invalid_tensor
+from codes.dataset.util import read_image, image_to_channels
+from codes.util.misc import get_invalid_tensor
 
 class ValDataset(object):
 
@@ -57,7 +57,7 @@ class ValDataset(object):
         index = index % len(self.image_files)
 
         image = read_image(self.image_files[index])
-        mask = read_image(self.mask_files[index], is_mask=True).astype(np.float)
+        mask = read_image(self.mask_files[index], is_mask=True).astype(np.float64)
         image = np.pad(image, ((self.pad_h_before, self.pad_h_after), (self.pad_w_before, self.pad_w_after), (0,0)), mode='edge')
         mask = np.pad(mask, ((self.pad_h_before, self.pad_h_after), (self.pad_w_before, self.pad_w_after), (0, 0)), mode='edge')
 
@@ -72,7 +72,7 @@ class ValDataset(object):
             print_ = read_image(self.print_files[index])
             print_ = np.pad(print_, ((self.pad_h_before, self.pad_h_after), (self.pad_w_before, self.pad_w_after), (0,0)), mode='edge')#, constant_values=1)
             print_ = image_to_channels(print_)
-            print_ = print_[0:1, ...].astype(np.bool)
+            print_ = print_[0:1, ...].astype(np.bool_)
         else:
             print_ = get_invalid_tensor(tensor=False)
 
@@ -84,7 +84,7 @@ class ValDataset(object):
         else:
             albedo = get_invalid_tensor(tensor=False)
 
-        return image, mask[0:1, ...].astype(np.bool), print_, albedo, self.image_file_names[index], \
+        return image, mask[0:1, ...].astype(np.bool_), print_, albedo, self.image_file_names[index], \
                self.pad_h_before, self.pad_h_after, self.pad_w_before, self.pad_w_after
 
     def __len__(self):

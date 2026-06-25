@@ -12,13 +12,16 @@ eps = 0.0000000001
 
 
 
-jet_cmap = matplotlib.cm.get_cmap('jet')
+try:
+    jet_cmap = matplotlib.colormaps['jet']
+except AttributeError:
+    jet_cmap = matplotlib.colormaps['jet']
 jet_cmap = jet_cmap(np.arange(256))[:, :3]
 jet_cmap = jet_cmap[:, [2, 1, 0]]
 jet_cmap2 = jet_cmap.copy()
 jet_cmap2[:, 0] = np.arange(256)/255.0
 
-viridis_cmap = matplotlib.cm.get_cmap('viridis')
+viridis_cmap = matplotlib.colormaps['viridis']
 viridis_cmap = viridis_cmap(np.arange(256))[:, :3]
 viridis_cmap = viridis_cmap[:, [2, 1, 0]]
 

@@ -146,7 +146,7 @@ class RealDataset(object):
         [image, albedo, mask] =  [self.get_patch(item[shoe_type_index][index], x, y) if item is not None else None
              for item in [self.images, self.albedos, self.masks]]
 
-        return image, albedo, mask.astype(np.bool), x, y
+        return image, albedo, mask.astype(np.bool_), x, y
 
     """
         Returns a random processed_shoe type and a random distinct pair of images for that processed_shoe type. 
@@ -182,7 +182,7 @@ class RealDataset(object):
             if self.full:
                 [image, albedo, mask] = [item[shoe_type_index][shoe_index] if item is not None else None
                                           for item in [self.images, self.albedos, self.masks]]
-                mask = mask.astype(np.bool)
+                mask = mask.astype(np.bool_)
                 repeat = False
             else:
                 image, albedo, mask, x, y = self.get_random_patch(shoe_type_index, shoe_index)
@@ -192,9 +192,8 @@ class RealDataset(object):
 
         # move the channel to the first dimension for training
         [image, albedo, mask] = [image_to_channels(item) if item is not None else -1 for item in [image, albedo, mask]]
-        name = self.paths[shoe_type_index][shoe_index].rsplit('/', 1)[1]
-
-        return image, albedo, mask[0:1, ...].astype(np.bool), name
+        name = os.path.basename(self.paths[shoe_type_index][shoe_index])
+        return image, albedo, mask[0:1, ...].astype(np.bool_), name
 
     def __len__(self):
         return self.dataset_size
