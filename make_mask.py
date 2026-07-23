@@ -35,8 +35,8 @@ def segment_with_points(image_path, save_path):
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # Wyświetl obraz
-    cv2.namedWindow("Wybierz punkty (LPM=FG, PPM=BG, ENTER=segmentacja)")
-    cv2.setMouseCallback("Wybierz punkty (LPM=FG, PPM=BG, ENTER=segmentacja)", mouse_callback)
+    cv2.namedWindow("LPM=FG, PPM=BG, ENTER=segmentacja")
+    cv2.setMouseCallback("LPM=FG, PPM=BG, ENTER=segmentacja", mouse_callback)
 
     while True:
         img_show = image.copy()
@@ -49,7 +49,7 @@ def segment_with_points(image_path, save_path):
         for (x, y) in bg_points:
             cv2.circle(img_show, (x, y), 5, (0, 0, 255), -1)
 
-        cv2.imshow("Wybierz punkty (LPM=FG, PPM=BG, ENTER=segmentacja)", img_show)
+        cv2.imshow("LPM=FG, PPM=BG, ENTER=segmentacja", img_show)
         key = cv2.waitKey(1)
 
         # ENTER segmentacja
@@ -65,7 +65,7 @@ def segment_with_points(image_path, save_path):
 
     # Sprawdzenie minimalnej liczby punktów FG
     if len(fg_points) < 2:
-        print("Musisz wybrać minimum 2 punkty FG!")
+        print("minimum 2 punkty FG")
         return
 
     # Przygotowanie punktów
@@ -87,7 +87,7 @@ def segment_with_points(image_path, save_path):
     mask_img = Image.fromarray(best_mask)
     mask_img.save(save_path)
 
-    print("✔ Zapisano maskę:", save_path)
+    print(" Zapisano maskę:", save_path)
 
 
 def segment_folder(input_folder, output_folder):
@@ -98,15 +98,15 @@ def segment_folder(input_folder, output_folder):
             in_path = os.path.join(input_folder, filename)
             out_path = os.path.join(output_folder, filename)
 
-            print("\n➡ Segmentuję:", filename)
+            print("Segmentacja:", filename)
             print("LPM = foreground, PPM = background, ENTER = segmentacja")
 
             segment_with_points(in_path, out_path)
 
-    print("\n Wszystkie maski zapisane!")
+    print("\n Wszystkie maski zapisane w folderze:", output_folder)
 
 
-input_folder = r"data\moje_slady\image"
-output_folder = r"data\moje_slady\mask_2"
+input_folder = r"data\moje_slady\image_2"
+output_folder = r"data\moje_slady\mask_3"
 
 segment_folder(input_folder, output_folder)
