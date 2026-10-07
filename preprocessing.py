@@ -216,5 +216,5 @@ if __name__ == "__main__":
         mask_folder=mask_folder,
         output_image_folder=output_image_folder,
         output_mask_folder=output_mask_folder,
-        target_size=768,  # zwiększcie do 1024 jeśli macie GPU i chcecie więcej detalu
+        target_size=768,  
     )
