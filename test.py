@@ -25,6 +25,7 @@ Wejście:
     - maski:  data\\moje_slady\\mask_3_prep
 """
 
+import argparse
 import os
 import numpy as np
 import torch
@@ -247,22 +248,30 @@ def process_folder(
 
 
 if __name__ == "__main__":
-    image_folder = r"data\moje_slady\image_2_prep"
-    mask_folder = r"data\moje_slady\mask_3_prep"
-
-    output_relief_folder = r"data\moje_slady\relief_4"
-    output_print_folder = r"data\moje_slady\print_5"
+    parser = argparse.ArgumentParser(description="Generate relief maps and synthetic shoeprint masks using a depth model.")
+    parser.add_argument("--image_folder", type=str, default=r"data\moje_slady\image_2_prep")
+    parser.add_argument("--mask_folder", type=str, default=r"data\moje_slady\mask_3_prep")
+    parser.add_argument("--output_relief_folder", type=str, default=r"data\moje_slady\relief_4")
+    parser.add_argument("--output_print_folder", type=str, default=r"data\moje_slady\print_5")
+    parser.add_argument("--depth_source", type=str, default="combined", choices=["model", "shading", "combined"])
+    parser.add_argument("--invert", action="store_true", default=True)
+    parser.add_argument("--threshold_method", type=str, default="adaptive", choices=["adaptive", "otsu", "fixed"])
+    parser.add_argument("--adaptive_block_size", type=int, default=35)
+    parser.add_argument("--adaptive_C", type=int, default=5)
+    parser.add_argument("--shading_blur_sigma", type=float, default=15.0)
+    parser.add_argument("--combined_weight_shading", type=float, default=0.6)
+    args = parser.parse_args()
 
     process_folder(
-        image_folder=image_folder,
-        mask_folder=mask_folder,
-        output_relief_folder=output_relief_folder,
-        output_print_folder=output_print_folder,
-        depth_source="combined",        # "model" / "shading" / "combined"
-        invert=True,
-        threshold_method="adaptive",
-        adaptive_block_size=35,
-        adaptive_C=5,
-        shading_blur_sigma=15.0,        # mniejsze = wyłapuje drobniejsze detale
-        combined_weight_shading=0.6,    # 0 = tylko model, 1 = tylko shading
+        image_folder=args.image_folder,
+        mask_folder=args.mask_folder,
+        output_relief_folder=args.output_relief_folder,
+        output_print_folder=args.output_print_folder,
+        depth_source=args.depth_source,
+        invert=args.invert,
+        threshold_method=args.threshold_method,
+        adaptive_block_size=args.adaptive_block_size,
+        adaptive_C=args.adaptive_C,
+        shading_blur_sigma=args.shading_blur_sigma,
+        combined_weight_shading=args.combined_weight_shading,
     )
